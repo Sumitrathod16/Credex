@@ -6,8 +6,8 @@
 // ============================================================
 
 import { useState } from "react";
+import Link from "next/link";
 import { StoredAudit } from "@/types/audit";
-import { TOOL_MAP } from "@/lib/pricing-data";
 import { getSavingsTierMessage } from "@/lib/audit-engine";
 
 interface Props {
@@ -49,15 +49,15 @@ export default function SharePageClient({ audit }: Props) {
       {/* Navbar */}
       <nav className="navbar">
         <div className="navbar-inner">
-          <a href="/" style={{ display: "flex", alignItems: "center", gap: "10px", textDecoration: "none" }}>
+          <Link href="/" style={{ display: "flex", alignItems: "center", gap: "10px", textDecoration: "none" }}>
             <span style={{ fontSize: "22px" }}>🔍</span>
             <span style={{ fontWeight: 700, fontSize: "18px", letterSpacing: "-0.02em", color: "var(--text-primary)" }}>
               Spend<span className="gradient-text">Lens</span>
             </span>
-          </a>
-          <a href="/" className="btn-primary" id="audit-my-stack-btn" style={{ fontSize: "13px", padding: "8px 16px" }}>
+          </Link>
+          <Link href="/" className="btn-primary" id="audit-my-stack-btn" style={{ fontSize: "13px", padding: "8px 16px" }}>
             Audit My Stack →
-          </a>
+          </Link>
         </div>
       </nav>
 
@@ -69,7 +69,7 @@ export default function SharePageClient({ audit }: Props) {
           </div>
           <h1 style={{ fontSize: "clamp(24px, 4vw, 36px)", fontWeight: 800, letterSpacing: "-0.03em", marginBottom: "12px" }}>
             {isOptimal
-              ? "This team's AI stack is already lean"
+              ? "This team\'s AI stack is already lean"
               : savings > 0
               ? `Found $${savings.toLocaleString()}/mo in AI savings`
               : "AI Spend Audit Results"}
@@ -181,9 +181,9 @@ export default function SharePageClient({ audit }: Props) {
             Run your own free audit in 2 minutes. No login required.
           </p>
           <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
-            <a href="/" className="btn-primary" id="run-own-audit-btn">
+            <Link href="/" className="btn-primary" id="run-own-audit-btn">
               🔍 Audit My Stack — Free
-            </a>
+            </Link>
             <button className="btn-secondary" onClick={handleShare} id="copy-share-link-btn">
               {copied ? "✓ Copied!" : "🔗 Copy Share Link"}
             </button>

@@ -9,7 +9,7 @@ import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { runAudit } from "@/lib/audit-engine";
 import { TOOLS } from "@/lib/pricing-data";
-import { AuditInput, AuditResult, ToolEntry, ToolId, UseCase } from "@/types/audit";
+import { AuditInput, AuditResult, AnyPlan, ToolEntry, ToolId, UseCase } from "@/types/audit";
 
 const STORAGE_KEY = "spendlens_form_v1";
 const RESULT_KEY = "spendlens_result_v1";
@@ -24,7 +24,7 @@ const USE_CASES: { value: UseCase; label: string; icon: string }[] = [
 
 const DEFAULT_TOOL_ENTRY = (toolId: ToolId): ToolEntry => ({
   toolId,
-  plan: TOOLS.find((t) => t.id === toolId)?.plans[0]?.id as any ?? "free",
+  plan: (TOOLS.find((t) => t.id === toolId)?.plans[0]?.id ?? "free") as AnyPlan,
   seats: 1,
   monthlySpend: 0,
 });
@@ -100,7 +100,7 @@ function ToolRow({
             id={`plan-${entry.toolId}`}
             className="form-select"
             value={entry.plan}
-            onChange={(e) => onUpdate({ ...entry, plan: e.target.value as any })}
+            onChange={(e) => onUpdate({ ...entry, plan: e.target.value as AnyPlan })}
           >
             {tool.plans.map((p) => (
               <option key={p.id} value={p.id}>
@@ -251,7 +251,7 @@ export default function HomePage() {
             <br />for AI tools?
           </h1>
           <p>
-            Enter your AI stack in 2 minutes. Get an instant audit showing exactly where you're
+            Enter your AI stack in 2 minutes. Get an instant audit showing exactly where you&apos;re
             overspending and what to do about it — no account required.
           </p>
         </div>
@@ -502,7 +502,7 @@ export default function HomePage() {
             Built for founders who are tired of guessing
           </h2>
           <p style={{ color: "var(--text-secondary)", fontSize: "15px", maxWidth: "500px", margin: "0 auto 40px" }}>
-            Most startups overspend on AI tools because there's no benchmark. SpendLens gives you one, free.
+            Most startups overspend on AI tools because there&apos;s no benchmark. SpendLens gives you one, free.
           </p>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "20px", maxWidth: "700px", margin: "0 auto" }}>
             {[

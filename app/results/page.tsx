@@ -7,6 +7,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { AuditResult, RecommendationType, ToolAuditResult } from "@/types/audit";
 import { getSavingsTierMessage } from "@/lib/audit-engine";
 
@@ -138,7 +139,7 @@ function LeadCaptureModal({
             Get your full report
           </h2>
           <p style={{ fontSize: "14px", color: "var(--text-secondary)", lineHeight: "1.6" }}>
-            We'll email you a permanent link to this audit. High-savings cases get a personal Credex follow-up.
+            We&apos;ll email you a permanent link to this audit. High-savings cases get a personal Credex follow-up.
           </p>
         </div>
 
@@ -257,12 +258,12 @@ export default function ResultsPage() {
       {/* Navbar */}
       <nav className="navbar">
         <div className="navbar-inner">
-          <a href="/" style={{ display: "flex", alignItems: "center", gap: "10px", textDecoration: "none" }}>
+          <Link href="/" style={{ display: "flex", alignItems: "center", gap: "10px", textDecoration: "none" }}>
             <span style={{ fontSize: "22px" }}>🔍</span>
             <span style={{ fontWeight: 700, fontSize: "18px", letterSpacing: "-0.02em", color: "var(--text-primary)" }}>
               Spend<span className="gradient-text">Lens</span>
             </span>
-          </a>
+          </Link>
           <div style={{ display: "flex", gap: "10px" }}>
             <button className="btn-secondary" onClick={handleShare} id="share-btn" style={{ fontSize: "13px", padding: "8px 16px" }}>
               🔗 Share
@@ -362,7 +363,7 @@ export default function ResultsPage() {
           <div style={{ marginTop: "24px", background: "rgba(16,185,129,0.05)", border: "1px solid rgba(16,185,129,0.2)", borderRadius: "12px", padding: "20px 24px" }}>
             <h3 style={{ fontSize: "15px", fontWeight: 600, marginBottom: "6px" }}>🎯 Your stack looks lean</h3>
             <p style={{ fontSize: "14px", color: "var(--text-secondary)", lineHeight: "1.6", marginBottom: "12px" }}>
-              Want to be notified when new optimizations apply to your stack? We'll ping you when better deals emerge for your tools.
+              Want to be notified when new optimizations apply to your stack? We&apos;ll ping you when better deals emerge for your tools.
             </p>
             {!emailCaptured && (
               <button className="btn-secondary" onClick={() => setShowModal(true)} id="notify-me-btn" style={{ fontSize: "13px" }}>
@@ -382,9 +383,9 @@ export default function ResultsPage() {
               📧 Email me the full report
             </button>
           )}
-          <a href="/" className="btn-secondary" id="new-audit-btn">
+          <Link href="/" className="btn-secondary" id="new-audit-btn">
             ↩ New audit
-          </a>
+          </Link>
         </div>
 
         {/* Disclaimer */}

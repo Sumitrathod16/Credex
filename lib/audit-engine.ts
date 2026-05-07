@@ -8,6 +8,7 @@ import {
   AuditResult,
   RecommendationType,
   ToolAuditResult,
+  ToolId,
 } from "@/types/audit";
 import {
   CODING_ALTERNATIVES,
@@ -26,7 +27,7 @@ function auditTool(
   useCase: string
 ): ToolAuditResult {
   const tool = TOOL_MAP[toolId as keyof typeof TOOL_MAP];
-  const currentPlan = getPlanPrice(toolId as any, plan);
+  const currentPlan = getPlanPrice(toolId as ToolId, plan);
 
   // Default baseline: no savings
   let recommendation: RecommendationType = "optimal";
@@ -49,7 +50,7 @@ function auditTool(
   }
 
   // ---- Rule 2: Cheaper plan from same vendor ----
-  const cheaperPlans = getCheaperPlans(toolId as any, plan, seats);
+  const cheaperPlans = getCheaperPlans(toolId as ToolId, plan, seats);
   if (cheaperPlans.length > 0) {
     const best = cheaperPlans.sort((a, b) => a.pricePerSeat - b.pricePerSeat)[0];
     const projectedCost = best.pricePerSeat * seats;
@@ -119,7 +120,7 @@ function auditTool(
   const annualSavings = monthlySavings * 12;
 
   return {
-    toolId: toolId as any,
+    toolId: toolId as ToolId,
     toolName,
     currentPlan: planLabel,
     currentMonthlySpend: monthlySpend,

@@ -23,22 +23,13 @@ export function buildPrompt(audit: AuditResult): string {
     .map((r) => `${r.toolName} (${r.currentPlan}, $${r.currentMonthlySpend}/mo, savings: $${r.monthlySavings}/mo)`)
     .join("; ");
 
-  return `You are a concise, honest AI spend advisor. Write a personalized ~100-word audit summary for a team.
+  return `You are a concise AI spend advisor. Write a single paragraph (~100 words) summarizing this team's AI tool audit.
 
-Context:
-- Team size: ${input.teamSize} people
-- Primary use case: ${USE_CASE_LABEL[input.useCase] ?? input.useCase}
-- AI tools in use: ${topTools}
-- Total potential monthly savings: $${totalMonthlySavings}
-- Total potential annual savings: $${totalAnnualSavings}
+Team: ${input.teamSize} people focused on ${USE_CASE_LABEL[input.useCase] ?? input.useCase}.
+Tools audited: ${topTools}.
+Total potential monthly savings: $${totalMonthlySavings}. Annual: $${totalAnnualSavings}.
 
-Instructions:
-- Be specific. Mention actual tool names and dollar amounts.
-- Lead with the biggest saving opportunity.
-- Tone: direct, financially literate, not salesy.
-- Do NOT recommend Credex directly — focus on the audit findings.
-- End with one sentence on what they should prioritize first.
-- 90–110 words. No bullet points. Plain prose.`;
+Rules: mention specific tool names and dollar figures. Lead with the top saving opportunity. Be direct and financially literate, not salesy. End with one actionable priority sentence. Write 90–110 words as a single prose paragraph with no lists or headers.`;
 }
 
 export function buildFallbackSummary(audit: AuditResult): string {
@@ -63,7 +54,8 @@ export async function generateAISummary(audit: AuditResult): Promise<string> {
     const prompt = buildPrompt(audit);
     const message = await client.messages.create({
       model: "claude-3-5-haiku-20241022",
-      max_tokens: 200,
+      max_tokens: 250,
+      stop_sequences: ["\n\n\n", "---"],
       messages: [{ role: "user", content: prompt }],
     });
 
@@ -72,8 +64,9 @@ export async function generateAISummary(audit: AuditResult): Promise<string> {
       return content.text.trim();
     }
     return buildFallbackSummary(audit);
-  } catch (error) {
-    console.error("[SpendLens] Anthropic API error — using fallback summary:", error);
+  } catch (error: any) {
+    const msg = error?.message ?? error?.error?.message ?? String(error);
+    console.error("[SpendLens] Anthropic API error — using fallback summary:", msg);
     return buildFallbackSummary(audit);
   }
 }
